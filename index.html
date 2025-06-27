@@ -1,246 +1,254 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Simple To-do list JS</title>
+  <title>Task List | Achieve the Day</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
+    :root {
+      --bg-color: #121212;
+      --text-color: #f0f0f0;
+      --card-color: #1f1f1f;
+      --accent: #00c9a7;
+      --muted: #888;
+    }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    body.light-mode {
+      --bg-color: #f0f0f0;
+      --text-color: #121212;
+      --card-color: #ffffff;
+      --accent: #0078d7;
+      --muted: #666;
     }
 
     body {
-      font-family: 'Open Sans', sans-serif;
-      background: linear-gradient(135deg, #fce4ec, #f8bbd0);
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 10px;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      margin: 0;
+      padding: 2rem;
+      transition: all 0.3s ease;
     }
 
-    .container {
-      width: 100%;
-      max-width: 500px;
-      padding: 20px;
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-      background: white;
-      border-radius: 20px;
-    }
-
-    .task {
-      background-color: #ec407a;
-      border-radius: 25px;
-      padding: 30px 20px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-      color: white;
+    h1 {
       text-align: center;
+      font-size: 2.5rem;
+      color: var(--accent);
     }
 
-    .task h1 {
-      margin-bottom: 20px;
-      font-size: 24px;
-      font-weight: 700;
+    .quote {
+      text-align: center;
+      font-style: italic;
+      margin-bottom: 2rem;
+      font-size: 1.2rem;
+      color: var(--muted);
     }
 
-    .block-input {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-
-    #task-input {
-      flex: 1;
-      padding: 10px;
-      font-size: 16px;
-      border: none;
-      border-radius: 8px;
-      outline: none;
-    }
-
-    #add-task {
-      padding: 10px 20px;
-      border: none;
-      border-radius: 8px;
-      background-color: #880e4f;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-
-    #add-task:hover {
-      background-color: #560027;
-    }
-
-    .task-list {
-      text-align: left;
-      max-height: 300px;
-      overflow-y: auto;
-    }
-
-    .task-item {
-      list-style: none;
-      background-color: #f8bbd0;
-      color: #333;
-      padding: 10px;
+    input, button {
+      font-size: 1rem;
+      padding: 0.7rem;
       border-radius: 10px;
-      margin-bottom: 10px;
-      font-size: 16px;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .task-item span {
-      display: flex;
-      align-items: center;
-    }
-
-    .task-item input[type="checkbox"] {
-      margin-right: 10px;
-      transform: scale(1.2);
-    }
-
-    .remove-task {
-      background-color: #c2185b;
       border: none;
-      color: white;
-      padding: 6px 10px;
-      border-radius: 6px;
+    }
+
+    #taskInput {
+      width: 60%;
+      background-color: var(--card-color);
+      color: var(--text-color);
+      margin-right: 10px;
+    }
+
+    #addTask, #clearAll, #toggleMode {
+      background-color: var(--accent);
+      color: var(--bg-color);
       cursor: pointer;
-      font-size: 14px;
-      transition: background-color 0.3s ease;
-      align-self: flex-end;
+      margin-right: 10px;
     }
 
-    .remove-task:hover {
-      background-color: #880e4f;
+    #toggleMode {
+      float: right;
+      font-size: 0.9rem;
+      padding: 0.5rem 1rem;
+      margin-bottom: 1rem;
     }
 
-    .completed {
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      background: var(--card-color);
+      margin-bottom: 10px;
+      padding: 12px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: 0.3s;
+    }
+
+    li.completed {
       text-decoration: line-through;
-      color: gray;
+      color: var(--muted);
     }
 
-    small {
-      font-size: 12px;
-      color: #555;
-      margin-top: 4px;
+    .date {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: 5px;
     }
 
-    @media (max-width: 600px) {
-      .task-item {
-        font-size: 14px;
-        padding: 8px;
-      }
+    .delete-btn {
+      color: #ff6b6b;
+      cursor: pointer;
+      margin-left: 10px;
+    }
 
-      .remove-task {
-        font-size: 12px;
-        padding: 5px 8px;
-      }
+    .delete-btn:hover {
+      color: #ff3b3b;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    li {
+      animation: fadeIn 0.3s ease;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .task-content {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      align-items: center;
     }
   </style>
 </head>
 
 <body>
-  <div class="container">
-    <div class="task">
-      <h1>My To-do List</h1>
-      <div class="block-input">
-        <input type="text" id="task-input" placeholder="Add your task" />
-        <button id="add-task"><i class="fa fa-plus"></i> Add</button>
-      </div>
-      <div class="task-list">
-        <!-- Tasks will appear here -->
-      </div>
-    </div>
+  <button id="toggleMode">Toggle Theme</button>
+  <h1>📋 Your Task List</h1>
+  <div class="quote">
+    "Every little step matters. Today is the perfect day to start!" 🚀
   </div>
 
+  <input type="text" id="taskInput" placeholder="Enter a new task...">
+  <button id="addTask">Add Task</button>
+  <button id="clearAll">Clear All</button>
+
+  <ul id="taskList"></ul>
+
+  <audio id="sound-add" src="https://assets.mixkit.co/sfx/preview/mixkit-unlock-game-notification-253.wav"></audio>
+  <audio id="sound-done" src="https://assets.mixkit.co/sfx/preview/mixkit-positive-interface-beep-221.wav"></audio>
+  <audio id="sound-delete" src="https://assets.mixkit.co/sfx/preview/mixkit-click-error-1110.wav"></audio>
+
   <script>
-    const taskInput = document.querySelector("#task-input");
-    const addTask = document.querySelector("#add-task");
-    const taskList = document.querySelector(".task-list");
+    const taskInput = document.getElementById("taskInput");
+    const addTask = document.getElementById("addTask");
+    const taskList = document.getElementById("taskList");
+    const clearAll = document.getElementById("clearAll");
+    const toggleMode = document.getElementById("toggleMode");
 
-    function saveTasks() {
-      const allTasks = [];
-      document.querySelectorAll(".task-item").forEach(item => {
-        const text = item.querySelector("span").textContent;
-        const done = item.querySelector("input[type='checkbox']").checked;
-        const time = item.querySelector("small").textContent;
-        allTasks.push({ text, done, time });
-      });
-      localStorage.setItem("tasks", JSON.stringify(allTasks));
+    const soundAdd = document.getElementById("sound-add");
+    const soundDone = document.getElementById("sound-done");
+    const soundDelete = document.getElementById("sound-delete");
+
+    // Load theme
+    if (localStorage.getItem("theme") === "light") {
+      document.body.classList.add("light-mode");
     }
 
-    function createTask(text, done = false, timeStr = null) {
-      const taskItem = document.createElement("div");
-      taskItem.className = "task-item";
-
-      const taskRow = document.createElement("span");
-      const checkbox = document.createElement("input");
-      checkbox.type = "checkbox";
-      checkbox.checked = done;
-
-      const taskText = document.createElement("span");
-      taskText.textContent = text;
-      if (done) taskText.classList.add("completed");
-
-      const taskTime = document.createElement("small");
-      taskTime.textContent = timeStr || `Ajoute a: ${new Date().toLocaleTimeString()}`;
-
-      const removeBtn = document.createElement("button");
-      removeBtn.className = "remove-task";
-      removeBtn.innerHTML = '<i class="fa-solid fa-xmark"></i>';
-
-      checkbox.addEventListener("change", () => {
-        taskText.classList.toggle("completed");
-        saveTasks();
-      });
-
-      removeBtn.addEventListener("click", () => {
-        taskList.removeChild(taskItem);
-        saveTasks();
-      });
-
-      taskRow.appendChild(checkbox);
-      taskRow.appendChild(taskText);
-
-      taskItem.appendChild(taskRow);
-      taskItem.appendChild(taskTime);
-      taskItem.appendChild(removeBtn);
-
-      taskList.prepend(taskItem);
-    }
-
-    window.addEventListener("DOMContentLoaded", () => {
+    // Load tasks
+    window.onload = () => {
       const savedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
-      savedTasks.forEach(task => {
-        createTask(task.text, task.done, task.time);
-      });
-    });
+      savedTasks.forEach(task => addTaskToDOM(task.text, task.completed, task.date));
+    };
 
     addTask.addEventListener("click", () => {
-      const value = taskInput.value.trim();
-      if (value === "") {
-        alert("Tanpri antre yon tach avan ou ajoute li!");
-        return;
+      const text = taskInput.value.trim();
+      if (text !== "") {
+        const date = new Date().toLocaleString();
+        addTaskToDOM(text, false, date);
+        saveTasks();
+        taskInput.value = "";
+        soundAdd.play();
       }
-      createTask(value);
-      taskInput.value = "";
-      saveTasks();
     });
 
     taskInput.addEventListener("keypress", e => {
       if (e.key === "Enter") addTask.click();
     });
+
+    function addTaskToDOM(text, completed, date) {
+      const li = document.createElement("li");
+      if (completed) li.classList.add("completed");
+
+      const taskContent = document.createElement("div");
+      taskContent.classList.add("task-content");
+
+      const taskText = document.createElement("span");
+      taskText.textContent = text;
+      taskContent.appendChild(taskText);
+
+      const deleteBtn = document.createElement("span");
+      deleteBtn.innerHTML = "<i class='fas fa-trash delete-btn'></i>";
+      deleteBtn.addEventListener("click", e => {
+        e.stopPropagation();
+        li.remove();
+        saveTasks();
+        soundDelete.play();
+      });
+      taskContent.appendChild(deleteBtn);
+
+      li.appendChild(taskContent);
+
+      const dateEl = document.createElement("div");
+      dateEl.classList.add("date");
+      dateEl.textContent = `Created: ${date}`;
+      li.appendChild(dateEl);
+
+      li.addEventListener("click", e => {
+        if (!e.target.closest('.delete-btn')) {
+          li.classList.toggle("completed");
+          saveTasks();
+          soundDone.play();
+        }
+      });
+
+      taskList.appendChild(li);
+    }
+
+    function saveTasks() {
+      const tasks = [];
+      document.querySelectorAll("#taskList li").forEach(li => {
+        const text = li.querySelector("span").textContent;
+        const date = li.querySelector(".date").textContent.replace("Created: ", "");
+        tasks.push({
+          text: text,
+          completed: li.classList.contains("completed"),
+          date: date
+        });
+      });
+      localStorage.setItem("tasks", JSON.stringify(tasks));
+    }
+
+    clearAll.addEventListener("click", () => {
+      if (confirm("Are you sure you want to delete all tasks?")) {
+        taskList.innerHTML = "";
+        localStorage.removeItem("tasks");
+        soundDelete.play();
+      }
+    });
+
+    toggleMode.addEventListener("click", () => {
+      document.body.classList.toggle("light-mode");
+      localStorage.setItem("theme", document.body.classList.contains("light-mode") ? "light" : "dark");
+    });
   </script>
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
 </body>
-
 </html>
