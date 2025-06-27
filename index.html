@@ -2,94 +2,113 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Task List | Achieve the Day</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My To-Do Dashboard</title>
   <style>
     :root {
       --bg-color: #121212;
       --text-color: #f0f0f0;
       --card-color: #1f1f1f;
       --accent: #00c9a7;
-      --muted: #888;
+      --muted: #aaaaaa;
     }
 
     body.light-mode {
-      --bg-color: #f0f0f0;
+      --bg-color: #f8f8f8;
       --text-color: #121212;
       --card-color: #ffffff;
       --accent: #0078d7;
-      --muted: #666;
+      --muted: #555555;
+    }
+
+    * {
+      box-sizing: border-box;
     }
 
     body {
-      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
       background-color: var(--bg-color);
       color: var(--text-color);
-      margin: 0;
-      padding: 2rem;
-      transition: all 0.3s ease;
+      font-family: 'Segoe UI', sans-serif;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    main {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     h1 {
-      text-align: center;
-      font-size: 2.5rem;
+      font-size: 3rem;
       color: var(--accent);
+      text-align: center;
+      margin-bottom: 0.5rem;
     }
 
     .quote {
+      font-size: 1.2rem;
       text-align: center;
       font-style: italic;
-      margin-bottom: 2rem;
-      font-size: 1.2rem;
       color: var(--muted);
-    }
-
-    input, button {
-      font-size: 1rem;
-      padding: 0.7rem;
-      border-radius: 10px;
-      border: none;
+      margin-bottom: 2rem;
+      max-width: 90%;
     }
 
     #taskInput {
-      width: 60%;
+      width: 100%;
+      padding: 1rem;
+      font-size: 1.1rem;
+      border-radius: 10px;
+      border: none;
       background-color: var(--card-color);
       color: var(--text-color);
-      margin-right: 10px;
-    }
-
-    #addTask, #clearAll, #toggleMode {
-      background-color: var(--accent);
-      color: var(--bg-color);
-      cursor: pointer;
-      margin-right: 10px;
-    }
-
-    #toggleMode {
-      float: right;
-      font-size: 0.9rem;
-      padding: 0.5rem 1rem;
       margin-bottom: 1rem;
     }
 
+    #addTask, #clearAll, #toggleMode {
+      padding: 0.8rem 1.5rem;
+      font-size: 1rem;
+      border-radius: 10px;
+      border: none;
+      background-color: var(--accent);
+      color: var(--bg-color);
+      margin: 0.5rem;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    #addTask:hover, #clearAll:hover, #toggleMode:hover {
+      background-color: #00a78a;
+    }
+
     ul {
-      list-style-type: none;
+      width: 100%;
+      list-style: none;
       padding: 0;
     }
 
     li {
-      background: var(--card-color);
-      margin-bottom: 10px;
-      padding: 12px;
-      border-radius: 8px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      transition: 0.3s;
+      background-color: var(--card-color);
+      margin-bottom: 1rem;
+      padding: 1rem;
+      border-radius: 10px;
+      animation: fadeIn 0.3s ease;
     }
 
     li.completed {
       text-decoration: line-through;
       color: var(--muted);
+    }
+
+    .task-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
     .date {
@@ -101,7 +120,6 @@
     .delete-btn {
       color: #ff6b6b;
       cursor: pointer;
-      margin-left: 10px;
     }
 
     .delete-btn:hover {
@@ -113,37 +131,40 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    li {
-      animation: fadeIn 0.3s ease;
-      flex-direction: column;
-      align-items: flex-start;
-    }
-
-    .task-content {
-      display: flex;
-      justify-content: space-between;
-      width: 100%;
-      align-items: center;
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 2.2rem;
+      }
+      #taskInput, #addTask, #clearAll {
+        font-size: 1.1rem;
+      }
     }
   </style>
 </head>
 
 <body>
-  <button id="toggleMode">Toggle Theme</button>
-  <h1>📋 Your Task List</h1>
-  <div class="quote">
-    "Every little step matters. Today is the perfect day to start!" 🚀
-  </div>
+  <main>
+    <button id="toggleMode">Toggle Theme</button>
+    <h1>🚀 Focus & Achieve</h1>
+    <div class="quote">
+      "Every great accomplishment begins with a decision to try. This list is more than tasks – it's your path, your
+      progress, your power. Take it one step at a time, and you'll be amazed how far you go." 💪
+    </div>
 
-  <input type="text" id="taskInput" placeholder="Enter a new task...">
-  <button id="addTask">Add Task</button>
-  <button id="clearAll">Clear All</button>
+    <input type="text" id="taskInput" placeholder="What do you want to accomplish today?">
+    <button id="addTask">Add Task</button>
+    <button id="clearAll">Clear All</button>
 
-  <ul id="taskList"></ul>
+    <ul id="taskList"></ul>
+  </main>
 
+  <!-- Sound Effects -->
   <audio id="sound-add" src="https://assets.mixkit.co/sfx/preview/mixkit-unlock-game-notification-253.wav"></audio>
   <audio id="sound-done" src="https://assets.mixkit.co/sfx/preview/mixkit-positive-interface-beep-221.wav"></audio>
   <audio id="sound-delete" src="https://assets.mixkit.co/sfx/preview/mixkit-click-error-1110.wav"></audio>
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
 
   <script>
     const taskInput = document.getElementById("taskInput");
@@ -248,7 +269,5 @@
       localStorage.setItem("theme", document.body.classList.contains("light-mode") ? "light" : "dark");
     });
   </script>
-
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
 </body>
 </html>
